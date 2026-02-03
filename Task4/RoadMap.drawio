@@ -1,0 +1,61 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram name="Страница-1" id="a5NmEelYL_LmncllSgBe">
+    <mxGraphModel dx="706" dy="602" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="N2pG1i61iKNAieaSmDva-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="149" width="550" x="30" y="241" as="geometry" />
+        </mxCell>
+        <mxCell id="N2pG1i61iKNAieaSmDva-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="90" width="550" x="30" y="151" as="geometry" />
+        </mxCell>
+        <mxCell id="N2pG1i61iKNAieaSmDva-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="90" width="550" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="uPCUSJz6bpvUCArlTUSo-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Q2 2026" vertex="1">
+          <mxGeometry height="40" width="120" x="290" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="uPCUSJz6bpvUCArlTUSo-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Q1 2026" vertex="1">
+          <mxGeometry height="40" width="120" x="160" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="uPCUSJz6bpvUCArlTUSo-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Q3 2026" vertex="1">
+          <mxGeometry height="40" width="120" x="420" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="uPCUSJz6bpvUCArlTUSo-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Подрядчик колл-центра" vertex="1">
+          <mxGeometry height="51" width="120" x="40" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="uPCUSJz6bpvUCArlTUSo-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Подрядчик партнерского колл-центра" vertex="1">
+          <mxGeometry height="60" width="120" x="40" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="uPCUSJz6bpvUCArlTUSo-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Команда IT банка" vertex="1">
+          <mxGeometry height="109" width="120" x="40" y="261" as="geometry" />
+        </mxCell>
+        <mxCell id="uPCUSJz6bpvUCArlTUSo-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Выгрузка ставок из АБС в кафка" vertex="1">
+          <mxGeometry height="39" width="220" x="180" y="261" as="geometry" />
+        </mxCell>
+        <mxCell id="uPCUSJz6bpvUCArlTUSo-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div style=&quot;background-color:#ffffff;color:#080808&quot;&gt;&lt;pre style=&quot;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:9,8pt;&quot;&gt;Создание адаптера к &lt;/pre&gt;&lt;pre style=&quot;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:9,8pt;&quot;&gt;партнерскому колл-центру&lt;/pre&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="59" width="220" x="260" y="311" as="geometry" />
+        </mxCell>
+        <mxCell id="uPCUSJz6bpvUCArlTUSo-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Получение и отображение ставок депозита из кафка" vertex="1">
+          <mxGeometry height="50" width="180" x="290" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="uPCUSJz6bpvUCArlTUSo-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Отображение ставок с SFTP сервера операторам" vertex="1">
+          <mxGeometry height="60" width="110" x="370" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="N2pG1i61iKNAieaSmDva-5" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="280" y="460" as="sourcePoint" />
+            <mxPoint x="280" y="10" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="N2pG1i61iKNAieaSmDva-6" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="410" y="460" as="sourcePoint" />
+            <mxPoint x="410" y="10" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

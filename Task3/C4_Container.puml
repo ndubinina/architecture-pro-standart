@@ -1,0 +1,63 @@
+@startuml
+title Открытие депозита онлайн
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(customer, "Действующий клиент банка")
+Person(new_customer, "Новый клиент банка")
+Person(call_operator, "Сотрудник кол-центра")
+Person(backoffice_deposit, "Сотрудник бэк-офиса депозитов")
+Person(backoffice_credit, "Сотрудник бэк-офиса кредитов")
+Person(frontoffice, "Сотрудник фронт-офиса")
+
+System_Ext(sms_sender, "Телеком оператор", "Отправка СМС")
+System(sms, "Шлюз телеком оператора", "Интеграция с оператором")
+System(kafka, "Kafka", "Асинхронная передача данных")
+System(site, "Сайт банка", "")
+System(callcenter, "Система кол-центра", "Обработка обращений клиентов")
+
+System_Boundary(ib_boundary, "Интернет-банк") {
+    Container(ib_front, "Frontend Интернет-банка", "Web UI", "Интерфейс клиента интернет-банка")
+    Container(ib_backend, "Backend Интернет-банка", "ASP.NET MVC 4.5",  "Бэкенд интернет-банка")
+    Container(ib_deposit_service, "Микросервис обработки депозитов", "Spring Boot")
+    Container(ib_db, "Database", "MS SQL")
+    Container(ib_deposit_db, "Deposit Internet_bank Database", "MS SQL")
+
+    Rel(ib_front, ib_backend, "HTTPS")
+    Rel(ib_backend, ib_deposit_service, "Логика работы с депозитами")
+    Rel(ib_backend, ib_db, "read/update")
+    Rel(ib_deposit_service, ib_deposit_db, "read/update")
+}
+
+System_Boundary(abs_boundary, "АБС") {
+    Container(abs_desktop, "Десктопный клиент для пользователей", "Delphi", "Учет заявок, депозитов и клиентов")
+    Container(abs_db, "СУБД Database", "Oracle", "PL/SQL процедуры и хранение данных")
+
+    Container(abs_deposit, "Микросервис для обработки депозитных заявок", "Spring Boot", "Обработка депозитных заявок")
+    Container(abs_rate, "Микросервис для работы со ставками", "Spring Boot", "Обработка ставок")
+    Container(abs_rate_db, "БД Микросервиса Ставок", "Oracle")
+
+    Rel(abs_desktop, abs_db, "read/update")
+    Rel(abs_deposit, abs_db, "read/update")
+    Rel(abs_rate, abs_rate_db, "read/update")
+}
+
+Rel(new_customer, site, "Подает предварительную заявку на депозит")
+Rel(site, callcenter, "Передача предварительной заявки на депозит")
+Rel(call_operator, callcenter, "Обработка предварительной заявки")
+Rel(callcenter, abs_db, "Передача заявки на депозит")
+Rel(customer, ib_front, "Подает заявку на депозит")
+Rel(ib_deposit_service, abs_deposit,  "Передача заявки на депозит")
+Rel(backoffice_deposit, abs_desktop, "Одобрение заявки и открытие депозита")
+Rel(backoffice_credit, abs_desktop, "Расчет ставок")
+Rel(backoffice_credit, abs_rate, "Загрузка ставок")
+Rel(abs_rate, kafka, "Публикация ставок депозитов")
+Rel(kafka, ib_backend, "Чтение актуальных ставок")
+Rel(kafka, site, "Чтение актуальных ставок")
+Rel(ib_backend, sms, "Отправка СМС-кода подтверждения")
+Rel(abs_core, sms, "Отправка СМС-уведомления о результате")
+Rel(abs_deposit, sms, "Отправка СМС со статусом депозита")
+Rel(sms, sms_sender, "Отправка СМС")
+Rel(frontoffice, abs_desktop, "Создание заявки, идентификация клиента")
+
+@enduml
