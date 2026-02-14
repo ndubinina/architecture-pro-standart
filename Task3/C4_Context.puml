@@ -1,0 +1,42 @@
+@startuml
+title Открытие депозита онлайн
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(customer, "Действующий клиент банка")
+Person(new_customer, "Новый клиент банка")
+Person(call_operator, "Сотрудник кол-центра", "Звонит клиенту и приглашает в офис")
+Person(backoffice_deposit, "Сотрудник бэк-офиса депозитов")
+Person(backoffice_credit, "Сотрудник бэк-офиса кредитов")
+Person(frontoffice, "Сотрудник фронт-офиса")
+
+System(site, "Сайт банка", "")
+System(ib, "Интернет-банк", "Онлайн-обслуживание клиентов")
+System(callcenter, "Система кол-центра", "Обработка обращений клиентов")
+System(abs, "АБС", "Обслуживание депозитных процессов")
+System(sms, "Шлюз телеком оператора", "Интеграция с оператором")
+System(kafka, "Кафка", "для асинхронных взаимодействий")
+System_Ext(sms_sender, "Телеком оператор", "Отправка СМС-уведомлений")
+
+Rel(new_customer, site, "Просмотр депозитов и подача заявки")
+Rel(site, callcenter, "Передача заявки на депозит")
+
+Rel(call_operator, callcenter, "Обработка заявки")
+Rel(callcenter, abs, "Передача подтвержденной заявки")
+
+Rel(frontoffice, abs, "Работа с заявками на депозит(создание, идентификация нового клиента)")
+Rel(backoffice_deposit, abs, "Одобрение заявки и открытие депозита")
+
+Rel(abs, sms, "Отправка уведомления о результате")
+Rel(sms, sms_sender, "Отправка СМС-кода")
+
+Rel(customer, ib, "Подача заявки на депозит")
+Rel(ib, sms, "Отправка СМС-кода для подтверждения")
+Rel(ib, abs, "Передача заявки на депозит")
+
+Rel(backoffice_credit, abs, "Расчет и загрузка ставок депозитов")
+Rel(abs, kafka, "Публикация ставок депозита")
+Rel(ib, kafka, "Чтение новых депозита")
+Rel(site, kafka, "Чтение новых депозита")
+
+@enduml

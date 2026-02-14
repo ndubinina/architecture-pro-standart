@@ -1,0 +1,48 @@
+@startuml
+title Заявка на кредит онлайн
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(customer, "Клиент банка")
+Person(new_customer, "Новый клиент банка")
+Person(backoffice_credit, "Сотрудник бэк-офиса кредитов")
+
+System(sms, "СМС-шлюз")
+System(kafka, "Kafka")
+
+System_Ext(bki, "БКИ")
+System_Ext(sms_sender, "Телеком оператор", "Отправка СМС")
+
+System_Boundary(ib_boundary, "Интернет-банк") {
+    Container(ib_front, "Frontend", "Web / Mobile UI", "Интерфейс клиента")
+    Container(ib_credit_service, "Микросервис обработки кредитов", "Spring Boot")
+    Container(ib_credit_db, "Credit Internet_bank Database", "MS SQL")
+}
+
+System_Boundary(cp_boundary, "Кредитный конвейер") {
+    Container(cp, "Кредитный конвейер", "BPM Camunda", "Обработка процессов кредитования")
+    Container(cp_db, "Database Кредитного конвейера", "Oracle", "Данные кредитных заявок")
+}
+
+System_Boundary(scoring_boundary, "Система скоринга") {
+    Container(scoring, "Скоринг система", "Python", "Скоринг кредитный заявок")
+    Container(scoring_db, "Database скоринга", "PostgreSQL", "Данные скоринга")
+}
+
+Rel(ib_front, ib_credit_service, "HTTPS")
+Rel(ib_credit_service, ib_credit_db, "read/update")
+Rel(cp, cp_db, "read/update")
+Rel(scoring, scoring_db, "read/update")
+Rel(new_customer, site, "Подача заявки на кредит")
+Rel(site, cp, "Подача заявки на кредит")
+Rel(customer, ib_front, "Подача заявки на предодобренный кредит")
+Rel(ib_credit_service, cp, "Передача заявки")
+Rel(cp, scoring, "Запрос скоринга")
+Rel(scoring, bki, "Запрос кредитной истории")
+Rel(cp, sms, "Отправка СМС о решении")
+Rel(sms, sms_sender, "Отправка СМС")
+Rel(backoffice_credit, cp, "Одобрение заявки")
+Rel(cp, kafka, "Публикация предодобренных кредитов")
+Rel(ib_credit_service, kafka, "Получение предодобренных кредитов")
+
+@enduml

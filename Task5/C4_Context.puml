@@ -1,0 +1,33 @@
+@startuml
+title Заявка на кредит онлайн
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(new_customer, "Новый клиент банка")
+Person(customer, "Клиент банка")
+Person(backoffice_credit, "Сотрудник бэк-офиса кредитов")
+
+System(site, "Сайт", "Подача заявок на кредит")
+System(ib, "Интернет-банк", "Подача заявок на кредит/на предодобренный кредит")
+System(credit_pipeline, "Кредитный конвейер", "Обработка кредитных заявок")
+System(credit_scoring, "Система скоринга", "Расчет кредитных рисков")
+System(kafka, "Kafka")
+System(sms, "СМС-шлюз")
+
+System_Ext(bki, "Бюро кредитных историй (БКИ)")
+System_Ext(telecom, "Телеком оператор")
+
+Rel(new_customer, site, "Подача заявки на кредит")
+Rel(site, credit_pipeline, "Передача заявки")
+Rel(credit_pipeline, credit_scoring, "Запрос скоринга")
+Rel(credit_scoring, bki, "Запрос кредитной истории")
+Rel(credit_pipeline, sms, "Отправка решения по заявке")
+Rel(sms, telecom, "Отправка СМС")
+
+Rel(credit_pipeline, kafka, "Публикация предодобренных кредитов")
+Rel(ib, kafka, "Получение предодобренных предложений")
+Rel(customer, ib, "Подача заявки на предодобренный кредит")
+Rel(ib, credit_pipeline, "Передача решения клиента по предодобренной заявке")
+Rel(backoffice_credit, credit_pipeline, "Обработка и одобрение заявки")
+
+@enduml

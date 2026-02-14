@@ -1,0 +1,38 @@
+@startuml
+title Передача ставок в call-центр
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Person(customer, "Клиент банка")
+Person(call_operator, "Сотрудник колл-центра")
+Person(backoffice_credit, "Сотрудник бэк-офиса кредитов")
+
+System(kafka, "Kafka")
+System(abs, "АБС", "Мастер-система актуальных ставок депозита")
+System_Ext(sftp, "SFTP партнёра")
+System_Ext(partner_callcenter, "Партнёрский колл-центр")
+
+System_Boundary(callcenter_boundary, "Система колл-центра") {
+    Component(callcenter_ui, "Веб-интерфейс", "React.js")
+    Component(callcenter_deposit, "Сервис работы с депозитами", "Spring Boot")
+    Component(callcenter_deposit_db, "Database колл-центра депозитов", "PostgreSQL", "Хранение актуальных ставок и заявок на депозит")
+
+    Rel(callcenter_ui, callcenter_deposit, "Запрос ставок")
+    Rel(callcenter_deposit, callcenter_deposit_db, "read/update")
+    Rel(callcenter_deposit, kafka, "Получение актуальных ставок")
+}
+
+System_Boundary(acl, "Слой ACL банка") {
+    Component(adapter_partner_callcenter, "Серивис-адаптер", "Spring Boot", "Инкапсулирует логику взаимодействия с внешней системой")
+}
+
+Rel(backoffice_credit, abs, "Расчет процентных ставок")
+Rel(abs, kafka, "Публикация актуальных ставок депозита")
+Rel(adapter_partner_callcenter, kafka, "Получение актуальных ставок")
+Rel(adapter_partner_callcenter, sftp, "Формирование и выгрузка файла со ставками")
+
+Rel(customer, call_operator, "Уточняет условия депозита")
+Rel(call_operator, callcenter_ui, "Просматривает актуальные ставки депозитов")
+Rel(partner_callcenter, sftp, "Получение файлов с актуальными ставками")
+
+@enduml

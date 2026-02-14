@@ -1,0 +1,28 @@
+@startuml
+title  Передача ставок в call-центр
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(customer, "Клиент банка")
+Person(call_operator, "Сотрудник колл-центра")
+Person(backoffice_credit, "Сотрудник бэк-офиса кредитов")
+
+System(abs, "АБС", "Расчет и хранение ставок депозитов")
+System(callcenter, "Система колл-центра", "Консультирование клиентов")
+System(kafka, "Kafka", "Асинхронное распространение ставок")
+System(partner_adapter, "Сервис-адаптер партнёрского колл-центра", "Формирование файлов")
+System_Ext(sftp, "SFTP партнёра", "Передача ставок")
+System_Ext(partner_callcenter, "Партнёрский колл-центр")
+
+Rel(backoffice_credit, abs, "Рассчитывает ставки")
+Rel(abs, kafka, "Публикует ставки депозитов")
+
+Rel(callcenter, kafka, "Получение актуальных ставок")
+Rel(call_operator, callcenter, "Просмотр ставок и консультация клиента")
+Rel(customer, call_operator, "Уточняет условия депозита")
+
+Rel(partner_adapter, kafka, "Получение актуальных ставок")
+Rel(partner_adapter, sftp, "Выгрузка файлов со ставками")
+Rel(partner_callcenter, sftp, "Доступ к файлам ставок")
+
+@enduml
